@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "MenuSchemaV1",
+  "type": "object",
+  "required": ["categories"],
+  "properties": {
+    "title": { "type": "string" },
+    "categories": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "items"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["name"],
+              "properties": {
+                "name": { "type": "string", "minLength": 1 },
+                "description": { "type": "string" },
+                "price": { "type": ["number", "string", "null"] }
+              },
+              "additionalProperties": false
+            }
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "theme": {
+      "type": "object",
+      "properties": {
+        "primaryColor": { "type": "string" },
+        "backgroundColor": { "type": "string" },
+        "font": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "published": { "type": "boolean" },
+    "lastUpdated": { "type": "string" }
+  },
+  "additionalProperties": false
+}
