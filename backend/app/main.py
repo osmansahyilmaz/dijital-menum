@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.config import get_settings
 from app.logging import logger
 from app.api.health import router as health_router
+from app.api.menus import router as menus_router
 
 
 def create_app() -> FastAPI:
@@ -41,6 +42,7 @@ def create_app() -> FastAPI:
 
     # Include routers
     app.include_router(health_router)
+    app.include_router(menus_router)  # Phase-2: Menu routes with auth
 
     logger.info(f"Application started in {settings.ENV} mode")
 

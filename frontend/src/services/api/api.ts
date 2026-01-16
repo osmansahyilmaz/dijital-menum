@@ -1,4 +1,5 @@
 import type { ApiError, ApiResult, Menu, CreateMenuResponse, PublishMenuResponse } from './types';
+import { supabase } from '../../lib/supabase';
 
 /**
  * API Configuration
@@ -23,20 +24,11 @@ export class ApiRequestError extends Error {
 }
 
 /**
- * Get auth token from storage
+ * Get auth token from Supabase session
  */
-function getAuthToken(): string | null {
-    // Supabase stores the session in localStorage
-    const session = localStorage.getItem('sb-auth-token');
-    if (session) {
-        try {
-            const parsed = JSON.parse(session);
-            return parsed.access_token || null;
-        } catch {
-            return null;
-        }
-    }
-    return null;
+async function getAuthToken(): Promise<string | null> {
+    const { data: { session } } = await supabase.auth.getSession();
+    return session?.access_token ?? null;
 }
 
 /**
@@ -54,7 +46,7 @@ async function apiFetch<T>(
     };
 
     // Add auth token if available
-    const token = getAuthToken();
+    const token = await getAuthToken();
     if (token) {
         (headers as Record<string, string>)['Authorization'] = `Bearer ${token}`;
     }
@@ -114,7 +106,7 @@ export const api = {
             formData.append(`image_${index}`, image);
         });
 
-        const token = getAuthToken();
+        const token = await getAuthToken();
         const headers: HeadersInit = {};
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;

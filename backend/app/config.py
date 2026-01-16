@@ -13,6 +13,9 @@ class Settings(BaseSettings):
     ENV: str
     LOG_LEVEL: str
     FRONTEND_ORIGIN: str
+    
+    # Phase-2: Supabase Auth
+    SUPABASE_URL: str | None = None
 
     class Config:
         env_file = ".env"

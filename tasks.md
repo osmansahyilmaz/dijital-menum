@@ -68,16 +68,16 @@
 
 **Osman**
 
-* [ ] Backend JWT verification dependency
-* [ ] Owner-check middleware for menus
-* [ ] Backend auth error handling
+* [T] Backend JWT verification dependency
+* [T] Owner-check middleware for menus
+* [T] Backend auth error handling
 
 **Emirhan**
 
-* [ ] Supabase project setup
-* [ ] Frontend login/register UI
-* [ ] Session persistence + logout
-* [ ] Route protection on frontend
+* [T] Supabase project setup
+* [T] Frontend login/register UI
+* [T] Session persistence + logout
+* [T] Route protection on frontend
 
 ---
 
