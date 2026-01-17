@@ -1,0 +1,220 @@
+{
+    "valid_examples": [
+        {
+            "name": "Simple Restaurant Menu",
+            "description": "Basic menu with one category",
+            "data": {
+                "schema_version": 1,
+                "title": "Cafe Deluxe",
+                "categories": [
+                    {
+                        "name": "Kahveler",
+                        "items": [
+                            {
+                                "name": "Espresso",
+                                "price": 25
+                            },
+                            {
+                                "name": "Americano",
+                                "price": 30
+                            },
+                            {
+                                "name": "Latte",
+                                "description": "Sütlü kahve",
+                                "price": 35
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Full Restaurant Menu",
+            "description": "Complete menu with multiple categories and theme",
+            "data": {
+                "schema_version": 1,
+                "title": "Lezzet Dünyası",
+                "categories": [
+                    {
+                        "name": "Başlangıçlar",
+                        "items": [
+                            {
+                                "name": "Mercimek Çorbası",
+                                "description": "Geleneksel Türk çorbası",
+                                "price": 45
+                            },
+                            {
+                                "name": "Humus",
+                                "price": 55
+                            },
+                            {
+                                "name": "Sigara Böreği",
+                                "description": "4 adet",
+                                "price": 60
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Ana Yemekler",
+                        "items": [
+                            {
+                                "name": "Adana Kebap",
+                                "description": "Acılı kıyma kebabı, pilav ve salata ile",
+                                "price": 180
+                            },
+                            {
+                                "name": "Tavuk Şiş",
+                                "price": 150
+                            },
+                            {
+                                "name": "Karışık Izgara",
+                                "description": "2 kişilik",
+                                "price": 350
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Tatlılar",
+                        "items": [
+                            {
+                                "name": "Künefe",
+                                "price": 80
+                            },
+                            {
+                                "name": "Baklava",
+                                "description": "4 dilim",
+                                "price": 70
+                            }
+                        ]
+                    }
+                ],
+                "theme": {
+                    "primaryColor": "#c41e3a",
+                    "backgroundColor": "#fff8f0",
+                    "font": "Playfair Display"
+                }
+            }
+        },
+        {
+            "name": "Menu with Missing Prices",
+            "description": "Valid menu where some prices are null (OCR couldn't read)",
+            "data": {
+                "schema_version": 1,
+                "categories": [
+                    {
+                        "name": "İçecekler",
+                        "items": [
+                            {
+                                "name": "Çay",
+                                "price": 10
+                            },
+                            {
+                                "name": "Türk Kahvesi",
+                                "price": null
+                            },
+                            {
+                                "name": "Ayran",
+                                "price": "5 TL"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Minimal Valid Menu",
+            "description": "Absolute minimum required fields",
+            "data": {
+                "schema_version": 1,
+                "categories": [
+                    {
+                        "name": "Ürünler",
+                        "items": [
+                            {
+                                "name": "Ürün 1"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    ],
+    "invalid_examples": [
+        {
+            "name": "Missing schema_version",
+            "reason": "schema_version is required",
+            "data": {
+                "categories": [
+                    {
+                        "name": "Test",
+                        "items": [
+                            {
+                                "name": "Item"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Wrong schema_version",
+            "reason": "schema_version must be 1",
+            "data": {
+                "schema_version": 2,
+                "categories": [
+                    {
+                        "name": "Test",
+                        "items": [
+                            {
+                                "name": "Item"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Missing categories",
+            "reason": "categories array is required",
+            "data": {
+                "schema_version": 1,
+                "title": "No Categories"
+            }
+        },
+        {
+            "name": "Empty category name",
+            "reason": "category name must have minLength 1",
+            "data": {
+                "schema_version": 1,
+                "categories": [
+                    {
+                        "name": "",
+                        "items": [
+                            {
+                                "name": "Item"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        {
+            "name": "Additional properties",
+            "reason": "additionalProperties is false",
+            "data": {
+                "schema_version": 1,
+                "categories": [
+                    {
+                        "name": "Test",
+                        "items": [
+                            {
+                                "name": "Item"
+                            }
+                        ]
+                    }
+                ],
+                "unknown_field": "should fail"
+            }
+        }
+    ]
+}
