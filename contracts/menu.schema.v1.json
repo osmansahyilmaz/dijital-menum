@@ -1,0 +1,91 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://dijital-menum.app/contracts/menu.schema.v1.json",
+    "title": "MenuSchemaV1",
+    "description": "Immutable v1 schema for menu data stored in menus.data JSONB column. DO NOT MODIFY - create v2 for changes.",
+    "type": "object",
+    "required": [
+        "schema_version",
+        "categories"
+    ],
+    "properties": {
+        "schema_version": {
+            "type": "integer",
+            "const": 1,
+            "description": "Schema version identifier. Must be 1 for this schema."
+        },
+        "title": {
+            "type": "string",
+            "description": "Menu title/name"
+        },
+        "categories": {
+            "type": "array",
+            "description": "List of menu categories",
+            "items": {
+                "type": "object",
+                "required": [
+                    "name",
+                    "items"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1,
+                        "description": "Category name"
+                    },
+                    "items": {
+                        "type": "array",
+                        "description": "List of menu items in this category",
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "name"
+                            ],
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "description": "Item name"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "description": "Item description"
+                                },
+                                "price": {
+                                    "type": [
+                                        "number",
+                                        "string",
+                                        "null"
+                                    ],
+                                    "description": "Item price. May be null if missing from OCR."
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "theme": {
+            "type": "object",
+            "description": "Optional theme customization",
+            "properties": {
+                "primaryColor": {
+                    "type": "string",
+                    "description": "Primary theme color (hex or named)"
+                },
+                "backgroundColor": {
+                    "type": "string",
+                    "description": "Background color (hex or named)"
+                },
+                "font": {
+                    "type": "string",
+                    "description": "Font family name"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
+}
