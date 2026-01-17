@@ -16,6 +16,10 @@ class Settings(BaseSettings):
     
     # Phase-2: Supabase Auth
     SUPABASE_URL: str | None = None
+    
+    # Phase-4: Supabase Storage (authorized config.py edit)
+    SUPABASE_SERVICE_ROLE_KEY: str | None = None
+    SUPABASE_STORAGE_BUCKET: str | None = None
 
     class Config:
         env_file = ".env"

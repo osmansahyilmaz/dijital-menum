@@ -10,6 +10,7 @@ from app.config import get_settings
 from app.logging import logger
 from app.api.health import router as health_router
 from app.api.menus import router as menus_router
+from app.api.images import router as images_router
 
 
 def create_app() -> FastAPI:
@@ -43,6 +44,7 @@ def create_app() -> FastAPI:
     # Include routers
     app.include_router(health_router)
     app.include_router(menus_router)  # Phase-2: Menu routes with auth
+    app.include_router(images_router)  # Phase-4: Image upload
 
     logger.info(f"Application started in {settings.ENV} mode")
 
