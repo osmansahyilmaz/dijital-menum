@@ -98,31 +98,23 @@
 
 **Emirhan**
 
-* [ ] Finalize `contracts/menu.schema.json`
-* [ ] Validate schema with real examples
-* [ ] Lock schema version (v1)
+* [x] Finalize `contracts/menu.schema.json`
+* [x] Validate schema with real examples
+* [x] Lock schema version (v1)
 
 ---
 
-## PHASE 4 — Image Upload & Storage
-
-### Goals
-
-* Safe, reliable image uploads
-
-### Tasks
-
-**Osman**
-
-* [ ] Multipart upload endpoint (FastAPI)
-* [ ] File validation (type, size limits)
-* [ ] Upload images to Supabase Storage
-
-**Emirhan**
-
-* [ ] Frontend file picker (multi-image)
-* [ ] Upload progress + error states
-* [ ] Store image references in UI state
+## Phase 4: Image Upload & Storage `[x]`
+- [x] **Backend (Osman)**
+    - [x] Supabase Storage bucket setup (`menu-images`)
+    - [x] Image upload endpoint (`POST /api/menus/{id}/images`)
+    - [x] File validation (max 5MB, max 5 files, jpg/png/webp)
+    - [x] Secure file storage implementation
+- [x] **Frontend (Emirhan)**
+    - [x] File picker & drag-drop zone
+    - [x] Client-side validation
+    - [x] Upload progress bar
+    - [x] Store image references in UI state
 
 ---
 

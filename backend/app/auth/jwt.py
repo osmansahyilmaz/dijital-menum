@@ -1,6 +1,6 @@
 """
-Phase-2: JWT verification using Supabase JWKS.
-Verifies Supabase-issued JWTs without issuing or storing tokens.
+Phase-2: JWT verification using Supabase JWKS or JWT Secret.
+Supports both RS256 (default) and HS256 (legacy/secret) algorithms.
 """
 
 import os
@@ -29,16 +29,27 @@ def _get_supabase_url() -> str:
 
 @lru_cache(maxsize=1)
 def _get_jwks_client() -> PyJWKClient:
-    """Get cached JWKS client for Supabase public keys."""
+    """Get cached JWKS client for Supabase public keys (RS256)."""
     supabase_url = _get_supabase_url()
-    # Supabase JWKS endpoint
     jwks_url = f"{supabase_url}/auth/v1/.well-known/jwks.json"
     return PyJWKClient(jwks_url)
+
+
+def _get_jwt_secret() -> str:
+    """Get JWT secret from environment (Supabase JWT Secret) for HS256."""
+    secret = os.getenv("SUPABASE_JWT_SECRET")
+    if not secret:
+        # Fallback to anon key if secret not explicitly set
+        secret = os.getenv("SUPABASE_ANON_KEY")
+    if not secret:
+        raise ValueError("SUPABASE_JWT_SECRET or SUPABASE_ANON_KEY required for HS256 verification")
+    return secret
 
 
 def verify_supabase_jwt(token: str) -> dict[str, Any]:
     """
     Verify a Supabase JWT and return the decoded payload.
+    Auto-detects algorithm (RS256 or HS256) from token header.
     
     Args:
         token: The JWT string to verify
@@ -50,23 +61,44 @@ def verify_supabase_jwt(token: str) -> dict[str, Any]:
         HTTPException: 401 if token is invalid, expired, or malformed
     """
     try:
-        jwks_client = _get_jwks_client()
+        # Decode header to check algorithm without verifying signature yet
+        header = jwt.get_unverified_header(token)
+        algorithm = header.get("alg")
         
-        # Get the signing key from JWKS
-        signing_key = jwks_client.get_signing_key_from_jwt(token)
-        
-        # Decode and verify the token
         supabase_url = _get_supabase_url()
-        payload = jwt.decode(
-            token,
-            signing_key.key,
-            algorithms=["RS256"],
-            audience="authenticated",
-            issuer=f"{supabase_url}/auth/v1",
-        )
+        issuer = f"{supabase_url}/auth/v1"
         
+        if algorithm == "HS256":
+            # Use JWT Secret for HS256
+            secret = _get_jwt_secret()
+            payload = jwt.decode(
+                token,
+                secret,
+                algorithms=["HS256"],
+                audience="authenticated",
+                issuer=issuer,
+            )
+        elif algorithm in ["RS256", "ES256"]:
+            # Use JWKS for Asymmetric algorithms (RSA or ECDSA)
+            jwks_client = _get_jwks_client()
+            signing_key = jwks_client.get_signing_key_from_jwt(token)
+            payload = jwt.decode(
+                token,
+                signing_key.key,
+                algorithms=[algorithm],
+                audience="authenticated",
+                issuer=issuer,
+            )
+        else:
+            logger.warning(f"Unsupported JWT algorithm: {algorithm}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail=f"Unsupported JWT algorithm: {algorithm}",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+            
         return payload
-        
+
     except jwt.ExpiredSignatureError:
         logger.warning("JWT verification failed: token expired")
         raise HTTPException(
@@ -75,7 +107,7 @@ def verify_supabase_jwt(token: str) -> dict[str, Any]:
             headers={"WWW-Authenticate": "Bearer"},
         )
     except jwt.InvalidTokenError as e:
-        logger.warning(f"JWT verification failed: invalid token - {type(e).__name__}")
+        logger.warning(f"JWT verification failed: invalid token - {type(e).__name__}: {e}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token",

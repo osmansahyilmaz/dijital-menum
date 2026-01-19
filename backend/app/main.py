@@ -3,6 +3,10 @@ FastAPI application entry point.
 Phase-1: Single instance, CORS, health endpoint only.
 """
 
+# Load .env file BEFORE any other imports
+from dotenv import load_dotenv
+load_dotenv()
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 

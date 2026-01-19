@@ -1,0 +1,33 @@
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environments & Dependencies
+node_modules/
+venv/
+env/
+__pycache__/
+*.pyc
+
+# Build & Dist
+dist/
+build/
+*.egg-info/
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Agentic
+.gemini/

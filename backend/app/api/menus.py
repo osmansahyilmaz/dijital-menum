@@ -59,6 +59,12 @@ def _enforce_ownership(menu: dict, user_id: str) -> None:
     Raises:
         HTTPException: 403 if user_id does not match menu.owner_id
     """
+    # DEVELOPMENT ONLY: Auto-assign mock menu to current user
+    if menu["owner_id"] == "placeholder-owner":
+        menu["owner_id"] = user_id
+        logger.info(f"DEVELOPMENT: Auto-assigned {menu['id']} ownership to {user_id}")
+        return
+
     if menu["owner_id"] != user_id:
         logger.warning(
             f"Ownership violation: user {user_id[:8]}... attempted to access menu owned by {menu['owner_id'][:8]}..."
