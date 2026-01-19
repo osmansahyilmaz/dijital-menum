@@ -10,6 +10,7 @@ import { HomePage } from './pages/HomePage';
 import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { DashboardPage } from './pages/DashboardPage';
+import { CreateMenuPage } from './pages/CreateMenuPage';
 
 function App() {
   return (
@@ -29,6 +30,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <DashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/menus/new"
+                element={
+                  <ProtectedRoute>
+                    <CreateMenuPage />
                   </ProtectedRoute>
                 }
               />

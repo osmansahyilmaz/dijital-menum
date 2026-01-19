@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../components/ui/Toast';
 
@@ -41,7 +42,10 @@ export function DashboardPage() {
 
                     <div className="grid md:grid-cols-2 gap-6">
                         {/* Create Menu Card */}
-                        <div className="p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer">
+                        <Link
+                            to="/menus/new"
+                            className="p-6 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl hover:border-blue-500 dark:hover:border-blue-400 transition-colors cursor-pointer block"
+                        >
                             <div className="text-center">
                                 <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
                                     <svg className="w-8 h-8 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,7 +59,7 @@ export function DashboardPage() {
                                     Menü fotoğraflarınızı yükleyerek dijital menünüzü oluşturun
                                 </p>
                             </div>
-                        </div>
+                        </Link>
 
                         {/* My Menus Card */}
                         <div className="p-6 bg-gray-50 dark:bg-gray-700/50 rounded-xl">
